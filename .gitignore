@@ -1,0 +1,6 @@
+venv
+__pycache__
+model.h5
+model.keras
+model(1).h5
+model(1).keras
