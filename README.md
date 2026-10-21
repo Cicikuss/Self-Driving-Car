@@ -13,7 +13,7 @@ direksiyon açılarını içerir.
 - Kamera görüntülerinden direksiyon açısı tahmini
 - Veri dengeleme ve görüntü artırma (augmentation)
 - Eğitim ve doğrulama kaybı grafiklerinin oluşturulması
-- Unity simülatörü ile Socket.IO üzerinden iletişim
+- Udacity Self Driving Car simülatörü ile Socket.IO üzerinden iletişim
 - Model aktivasyonlarının canlı olarak görselleştirilmesi
 - Klavye ile uzman sürüş verisi toplamak için DAgger altyapısı
 
@@ -31,14 +31,14 @@ direksiyon açılarını içerir.
 ├── model.keras                # Hazır model ağırlıkları
 ├── Data/                       # Sürüş verileri
 └── Default Windows desktop 64-bit.exe
-                                # Unity simülatörü (Windows)
+                                # Udacity Self Driving Car simülatörü (Windows)
 ```
 
 ## Gereksinimler
 
 - Windows
 - Python 3.10 veya üzeri
-- Unity simülatörü
+- Udacity Self Driving Car Sim
 - Python sanal ortamı kullanılması önerilir
 
 Kurulum:
@@ -98,7 +98,7 @@ gösterilmesini istemiyorsanız `--no-plot` seçeneğini kullanabilirsiniz.
 
 ## Simülatörde sürüş
 
-1. Unity simülatörünü başlatın.
+1. Udacity Self Driving Car simülatörünü başlatın.
 2. Model dosyasının `drive.py` içindeki model yolu ile eşleştiğini kontrol edin.
    Kod şu anda `modelc.keras` dosyasını yüklemeyi denemektedir; depodaki hazır
    modelin adı ise `model.keras` olarak verilmiştir.
