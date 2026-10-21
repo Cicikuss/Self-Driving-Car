@@ -14,12 +14,9 @@ class DAgger:
             print("Directory 'IMG' created successfully.")
         except FileExistsError:
             print("Directory 'IMG' already exists.")
-        
+
         self.current_angle = 0.0
-        self.current_throttle = 0.0
-        self.current_reverse = 0.0
-        self.current_speed = 0.0
-        columns = ["center","steering","throttle","reverse","speed"]
+        columns = ["center","left","right","steering","throttle","reverse","speed"]
         
         self.listener = keyboard.Listener(on_press=self.on_press,on_release=self.on_release)
         self.listener.start()
@@ -31,9 +28,6 @@ class DAgger:
 
     def on_release(self, key):
         self.current_angle = 0.0
-
-    def intervene_model(self,image,throttle,reverse,speed):
-        pass
     
     def on_press(self, key):
         try:
@@ -43,10 +37,6 @@ class DAgger:
                     
                 case 'd':
                     self.current_angle += 0.1
-                case 'w':
-                    self.current_throttle += 0.1
-                case 's':
-                    self.current_throttle -= 0.1
             self.current_angle = np.clip(self.current_angle, -1.0, 1.0)
         except AttributeError:
             pass
@@ -54,13 +44,14 @@ class DAgger:
     def add_data(self,image,throttle,reverse,speed):
         date = self.generate_time_stamp()
         save_path = os.path.join(self.current_dir, "IMG", f"center_{date}.jpg")
-        self.records.append((save_path,self.current_angle,throttle,reverse,speed))
+        self.records.append((save_path,"left", "right", self.current_angle,throttle,reverse,speed))
         img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         cv2.imwrite(save_path,img)
+        return save_path, self.current_angle, throttle, reverse, speed
     
     def save_csv(self):
         csv_path = os.path.join(self.current_dir, "driving_log.csv")
-        pd.DataFrame(self.records, columns=["center","steering","throttle","reverse","speed"]).to_csv(csv_path, index=False)
+        pd.DataFrame(self.records, columns=["center","left","right","steering","throttle","reverse","speed"]).to_csv(csv_path, index=False)
 
 
     
