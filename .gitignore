@@ -4,3 +4,8 @@ model.h5
 model.keras
 model(1).h5
 model(1).keras
+/__pycache__
+/.venv
+/Default Windows desktop 64-bit.exe
+/Default Windows desktop 64-bit_Data
+/Data

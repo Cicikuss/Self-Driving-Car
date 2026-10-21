@@ -47,13 +47,14 @@ def telemetry(sid, data):
 def connect(sid,environ):
     print('connect ', sid)
     send_control(0,0)
+    visualizer.start_window()
 
 def send_control(steering_angle,throttle):
     sio.emit('steer', data={'steering_angle': steering_angle.__str__(), 'throttle': throttle.__str__()  })
 
 
 if __name__ == '__main__':
-    model = load_model('model.h5',compile=False)
+    model = load_model('modelc.keras',compile=False)
     visualizer = Visualize(model)
     app = socketio.Middleware(sio,app)
     eventlet.wsgi.server(eventlet.listen(('', 4567)), app)
