@@ -5,3 +5,8 @@ pandas
 scikit-learn
 tensorflow
 keras
+imgaug
+flask
+eventlet
+python-socketio
+pillow
