@@ -44,6 +44,7 @@ def load_driving_log(data_dir):
 
 def balance_steering_data(data, num_bins=25, samples_per_bin=400, seed=None):
     hist, bins = np.histogram(data["steering"], num_bins)
+    remove_list = []
     for i in range(num_bins):
         list_ = []
         for j in range(len(data["steering"])):
@@ -51,8 +52,9 @@ def balance_steering_data(data, num_bins=25, samples_per_bin=400, seed=None):
                 list_.append(j)
         list_ = shuffle(list_, random_state=seed)
         list_ = list_[samples_per_bin:]
-        data.drop(data.index[list_], inplace=True)
-    return data, hist, bins
+        remove_list.extend(list_)
+    data.drop(data.index[remove_list], inplace=True)
+    return data, bins, hist
 
 def load_img_steering(data_dir, data):
     image_paths = [

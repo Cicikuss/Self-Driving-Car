@@ -9,8 +9,9 @@ class DAgger:
     def __init__(self):
         self.current_dir = os.getcwd()
         self.records = []
+        self.data_dir = f"Data/{self.generate_time_stamp()}"
         try:
-            os.mkdir("IMG")
+            os.mkdir(self.data_dir)
             print("Directory 'IMG' created successfully.")
         except FileExistsError:
             print("Directory 'IMG' already exists.")
@@ -43,14 +44,14 @@ class DAgger:
     
     def add_data(self,image,throttle,reverse,speed):
         date = self.generate_time_stamp()
-        save_path = os.path.join(self.current_dir, "IMG", f"center_{date}.jpg")
+        save_path = os.path.join(self.data_dir,"IMG", f"center_{date}.jpg")
         self.records.append((save_path,"left", "right", self.current_angle,throttle,reverse,speed))
         img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         cv2.imwrite(save_path,img)
         return save_path, self.current_angle, throttle, reverse, speed
     
     def save_csv(self):
-        csv_path = os.path.join(self.current_dir, "driving_log.csv")
+        csv_path = os.path.join(self.data_dir, "driving_log.csv")
         pd.DataFrame(self.records, columns=["center","left","right","steering","throttle","reverse","speed"]).to_csv(csv_path, index=False)
 
 

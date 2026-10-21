@@ -17,7 +17,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train the behavioral cloning model.")
     parser.add_argument(
         "--data-dir",
-        default=os.path.join(os.path.dirname(__file__), "..", "Tracks"),
+        default=os.path.join(os.path.dirname(__file__), "..", "Data", "Tracks"),
         help="Directory containing driving_log.csv and the camera images.",
     )
     parser.add_argument("--output", default="model.keras", help="Output model path.")
@@ -59,7 +59,7 @@ def main():
     data = load_driving_log(data_dir)
     data, _, _ = balance_steering_data(data)
 
-    image_paths, steerings = load_img_steering(data_dir, data)
+    image_paths, steerings = load_img_steering(data_dir + "/IMG", data)
     x_train, x_valid, y_train, y_valid = train_test_split(
         image_paths, steerings, test_size=0.2, random_state=6
     )
