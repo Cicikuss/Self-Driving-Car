@@ -6,13 +6,14 @@ from datetime import datetime
 import numpy as np
 
 class DAgger:
-    def __init__(self):
+    def __init__(self,data_dir = "Data"):
         self.current_dir = os.getcwd()
         self.records = []
-        self.data_dir = f"Data/{self.generate_time_stamp()}"
+        self.data_dir =  data_dir
         try:
-            os.mkdir(self.data_dir)
+            os.mkdir(os.path.join(self.data_dir, self.generate_time_stamp()))
             print("Directory 'IMG' created successfully.")
+            os.mkdir(os.path.join(self.data_dir, "IMG"))
         except FileExistsError:
             print("Directory 'IMG' already exists.")
 

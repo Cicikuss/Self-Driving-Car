@@ -1,4 +1,3 @@
-from email import header
 
 import cv2
 from keras import models
@@ -9,6 +8,7 @@ import numpy as np
 
 
 class Visualize:
+    #Şeyi kabul edicem Claude normalization ve grid yapmayı benden daha iyi yaptı.Benim versiyonumdan daha iyi oldu.
     def __init__(self,model,cols=8,tile = 96,per_channel_norm=True,cmap = cv2.COLORMAP_VIRIDIS):
         self.model = model
         self.cols = cols
