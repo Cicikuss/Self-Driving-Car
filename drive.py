@@ -54,7 +54,7 @@ def send_control(steering_angle,throttle):
 
 
 if __name__ == '__main__':
-    model = load_model('modelc.keras',compile=False)
+    model = load_model('model.keras',compile=False)
     visualizer = Visualize(model)
     app = socketio.Middleware(sio,app)
     eventlet.wsgi.server(eventlet.listen(('', 4567)), app)

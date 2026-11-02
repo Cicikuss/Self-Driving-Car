@@ -7,10 +7,15 @@ import numpy as np
 
 
 class Visualize:
-    def __init__(self,model):
+    def __init__(self,model,cols=8,tile = 96,per_channel_norm=True,cmap = cv2.COLORMAP_VIRIDIS):
         self.model = model
         self.listener = keyboard.Listener(on_press=self.on_press)
         self.listener.start()
+        self.cols = cols
+        self.tile = tile
+        self.per_channel_norm = per_channel_norm
+        self.cmap = cmap
+        self.show_kernels = False
         self.page =0
         self.layer_names = [layer.name for layer in self.model.layers if isinstance(layer, Conv2D) or isinstance(layer, MaxPooling2D)]
         self.layer_outputs = [layer.output for layer in self.model.layers if isinstance(layer, Conv2D) or isinstance(layer, MaxPooling2D)]
@@ -21,63 +26,66 @@ class Visualize:
     def start_window(self):
         cv2.namedWindow("Activation", cv2.WINDOW_NORMAL)
 
+    def stop(self):
+        cv2.destroyAllWindows()
+        self.listener.stop()
+
 
     def on_press(self, key):
+        n = len(self.layer_names)
         try:
             if key == keyboard.Key.right:
-                self.next_page()
+                self.page = (self.page + 1) % n
             elif key == keyboard.Key.left:
-                self.prev_page()
+                self.page = (self.page - 1) % n
+            elif hasattr(key,'char') and key.char:
+                c = key.char.lower()
+                if c == 'k':
+                    self.show_kernels = not self.show_kernels
+                elif c == 'q':
+                    self.per_channel_norm = not self.per_channel_norm
         except AttributeError:
             pass
         
-    def next_page(self):
-        print("Next Layer")
-        self.page += 1
-        if self.page >= len(self.layer_names):
-            self.page = 0
-    def prev_page(self):
-        print("Previous Layer")
-        self.page -= 1
-        if self.page < 0:
-            self.page = len(self.layer_names) - 1
 
     def concat_vh(self,list_2d):
         return cv2.vconcat([cv2.hconcat(list_h) 
                             for list_h in list_2d])
 
+    #-----------Helper functions for visualization----------------
 
+
+    def kernel_grid(self,page):
+        pass
+
+    def activation_grid(self,acts):
+        pass
+
+
+
+    #-----------Main function for visualization----------------
     def visualize(self, image):
-        activations = self.activation_model.predict(image)
-        steering_angle = float(activations[-1][0][0])
+        #Thread müdahalesi olmaması için page ve show_kernels değişkenlerini local değişkenlere atadım.
+        #Bir nevi snapshot almış oldum. Böylece threadler arası değişken çakışması olmayacak.
+        page , show_kernels = self.page, self.show_kernels
+
+        #Predict yerine bunu kullanmak daha mantıklıymış çünkü predict batch hazırlığı yapıyor
+        #Bunda direkt forward pass yapılıyor ve tensorler döndürülüyor.Opencv de kullanmak için numpy arraye çevirmek gerekiyor.
+        acts = [np.asarray(act) for act in self.activation_model(image, training=False)] 
+        steering_angle = float(acts[-1][0][0])
         
-        current_activation = activations[self.page][0]
-        num_channels = current_activation.shape[-1]
+        grid = self.kernel_grid(page) if show_kernels else None
+        if grid is not None:
+            title = f"Kernels: {self.layer_names[page]}"
+        else:
+            act = acts[page][0]
+            grid = self.activation_grid(act)
+            title = f"{self.layer_names[page]} {act.shape}"
+
+        inp = cv2.normalize(image[0], None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+        if inp.ndim == 2 or inp.shape[-1] == 1:
         
-        concataned_image = []
-        row = []
-        cols = 4  
-        
-        for i in range(num_channels):
-            
-            resized_feature = cv2.resize(current_activation[:, :, i], (128, 128))
-            row.append(resized_feature)
-            
-            
-            if len(row) == cols:
-                concataned_image.append(row)
-                row = []
-                
-        
-        if len(row) > 0:
-            while len(row) < cols:
-                row.append(np.zeros((128, 128), dtype=row[0].dtype))
-            concataned_image.append(row)
-            
-        final_grid = self.concat_vh(concataned_image)
-        final_grid = cv2.normalize(final_grid, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-        cv2.putText(final_grid, f"Layer: {self.layer_names[self.page]}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.imshow("Activation", final_grid)
         cv2.waitKey(1)
 
         return steering_angle

@@ -29,9 +29,7 @@ direksiyon açılarını içerir.
 ├── visualize.py               # Ara katman aktivasyonlarını gösterme
 ├── requirements.txt            # Python bağımlılıkları
 ├── model.keras                # Hazır model ağırlıkları
-├── Data/                       # Sürüş verileri
-└── Default Windows desktop 64-bit.exe
-                                # Udacity Self Driving Car simülatörü (Windows)
+└── Data/                       # Sürüş verileri
 ```
 
 ## Gereksinimler
