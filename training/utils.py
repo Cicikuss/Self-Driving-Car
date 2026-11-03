@@ -64,6 +64,17 @@ def load_img_steering(data_dir, data):
     steerings = data["steering"].astype(float).to_numpy()
     return np.asarray(image_paths), steerings
 
+def load_img_steering_all_cameras(data_dir, data):
+    image_paths = []
+    steerings = []
+    for _ , row in data.iterrows():
+        center_path = os.path.join(data_dir, row["center"].strip())
+        left_path = os.path.join(data_dir, row["left"].strip())
+        right_path = os.path.join(data_dir, row["right"].strip())
+        image_paths.extend([center_path, left_path, right_path])
+        steerings.extend([row["steering"], row["steering"] + 0.2, row["steering"] - 0.2])
+    return np.asarray(image_paths), np.asarray(steerings)
+
 
 def zoom(image):
     zoom = iaa.Affine(scale=(1, 1.3))

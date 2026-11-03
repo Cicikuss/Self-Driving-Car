@@ -78,7 +78,7 @@ def connect(sid,environ):
 def disconnect(sid):
     print('disconnect ', sid)
     if visualizer:
-        visualizer.close_window()
+        visualizer.stop()
     if dagger:
         dagger.save_csv()
 
