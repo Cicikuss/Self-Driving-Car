@@ -42,6 +42,7 @@ def load_driving_log(data_dir):
     return data
 
 
+
 def balance_steering_data(data, num_bins=25, samples_per_bin=400, seed=None):
     hist, bins = np.histogram(data["steering"], num_bins)
     remove_list = []

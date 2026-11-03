@@ -12,6 +12,8 @@ from utils import (
     nvidia_model,
 )
 
+#Tek load_img_steering_all_cameras ekledim yoksa behavioral_cloning.py de load_img_steering kullanıyordu. Bu da sadece center kameradan veri alıyordu. Ben tüm kameraları kullanmak için load_img_steering_all_cameras ekledim.
+#Yoksa çok da bir şey değişmedi yani.
 def parse_args():
     parser = argparse.ArgumentParser(description="Train the behavioral cloning model.")
     parser.add_argument(
