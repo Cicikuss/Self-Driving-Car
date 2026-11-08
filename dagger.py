@@ -98,7 +98,7 @@ class DAgger:
         csv_path = os.path.join(self.data_dir, "driving_log.csv")
         df = pd.DataFrame(self.records)
 
-        # Tipleri kesinleştir
+    
         df = df.astype({
             "center": str,
             "left": str,
@@ -109,7 +109,7 @@ class DAgger:
             "speed": float
         })
 
-        # header=False: Udacity standardına uygun şekilde asla başlık satırı yazılmaz
+        
         df.to_csv(csv_path, mode='a', header=False, index=False)
         
         print(f"[DAgger] {len(self.records)} adet veri kaydedildi (headersız): {csv_path}")

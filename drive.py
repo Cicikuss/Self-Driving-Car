@@ -121,6 +121,7 @@ def main():
 
     if args.visualize:
         visualizer = Visualize(model)
+    
 
     app = socketio.Middleware(sio, app)
     try:
