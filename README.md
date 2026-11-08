@@ -122,7 +122,8 @@ Bu komut:
 
 Simülatör çalışırken, modelin çalıştırıldığı ana betik `drive.py` dosyasıdır.
 
-### Standart davranışsal klonlama modu
+### Standart davranışsal klonlama moduBi de readme yazmaya üşendiğim için ai ya yazdırıyom.
+
 
 ```bash
 python drive.py behavioral_cloning --model model.keras
@@ -202,4 +203,3 @@ python drive.py behavioral_cloning --model model.keras
 ```
 
 Bu akış, mevcut kod tabanında temel eğitim ve simülatör çalıştırma yoludur.
-Bi de readme yazmaya üşendiğim için ai ya yazdırıyom.
